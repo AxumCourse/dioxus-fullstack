@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 
 use crate::models;
+use tokio::sync::OnceCell;
 
 pub struct Store(Arc<Mutex<Vec<models::Todo>>>);
 
@@ -36,6 +37,25 @@ impl Store {
     pub fn len(&self) -> usize {
         self.0.lock().unwrap().len()
     }
+
+    pub fn done(&self, id: &str) {
+        self.0
+            .lock()
+            .unwrap()
+            .iter_mut()
+            .find(|todo| todo.id == id)
+            .map(|todo| todo.is_done = true);
+    }
+}
+
+static DB: OnceCell<Store> = OnceCell::const_new();
+
+pub async fn init_db() -> Store {
+    Store::new()
+}
+
+pub async fn get_db() -> &'static Store {
+    DB.get_or_init(init_db).await
 }
 
 #[cfg(test)]
