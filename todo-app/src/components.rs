@@ -104,6 +104,9 @@ pub fn Header(mut todo_list: Resource<Result<Vec<models::Todo>, ServerFnError>>)
                         if title().is_empty() {
                             return;
                         }
+                        if title().len() > 50 {
+                            return;
+                        }
                         let _ = add_todo(title()).await.unwrap();
                         title.set(String::new());
                         todo_list.restart();
@@ -118,9 +121,18 @@ pub fn Header(mut todo_list: Resource<Result<Vec<models::Todo>, ServerFnError>>)
 
 #[server]
 async fn add_todo(title: String) -> Result<String, ServerFnError> {
+    if title.is_empty() {
+        return Ok("".to_string());
+    }
+    if title.len() > 50 {
+        return Ok("".to_string());
+    }
     let todo = models::Todo::new(title);
     let id = todo.id.clone();
     let db = db::get_db().await;
+    if db.len() >= 10 {
+        return Ok("".to_string());
+    }
     db.add(todo);
     Ok(id)
 }
