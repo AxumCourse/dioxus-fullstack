@@ -1,4 +1,5 @@
 use dioxus::prelude::*;
+use todo_app::components::{Body, Header};
 
 const FAVICON: Asset = asset!("/assets/favicon.ico");
 const MAIN_CSS: Asset = asset!("/assets/main.css");
@@ -14,6 +15,9 @@ fn App() -> Element {
         document::Link { rel: "stylesheet", href: MAIN_CSS }
         document::Stylesheet { href: MAIN_CSS }
 
-        div { class: "text-xl text-red-600", "Hello, 世界" }
+        div { class: "container mx-auto max-w-lg shadow-lg p-3 space-y-3",
+            Header {}
+            Body {}
+        }
     }
 }
