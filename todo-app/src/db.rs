@@ -3,8 +3,6 @@ use std::sync::{Arc, Mutex};
 use crate::models;
 use tokio::sync::OnceCell;
 
-const MAX_TODOS: usize = 10;
-
 pub struct Store(Arc<Mutex<Vec<models::Todo>>>);
 
 impl Store {
