@@ -1,0 +1,36 @@
+[package]
+name = "using-sqlx"
+version = "0.1.0"
+authors = ["axumrs <team@mail.axum.eu.org>"]
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/AxumCourse/dioxus-fullstack"
+homepage = "https://axum.eu.org/subject/dioxus-fullstack"
+description = "AXUM中文网专题： dioxus 全栈"
+
+[dependencies]
+dioxus = { version = "0.6.0", features = ["fullstack"] }
+dotenv = { version = "0.15.0", optional = true }
+sqlx = { version = "0.8.5", features = ["postgres", "runtime-tokio"], optional = true }
+tokio = { version = "1.45.0", features = ["full"], optional = true }
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+server = ["dioxus/server", "dep:tokio", "dep:sqlx", "dep:dotenv"]
+
+[profile]
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"
+ 
