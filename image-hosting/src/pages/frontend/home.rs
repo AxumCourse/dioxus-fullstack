@@ -3,6 +3,6 @@ use dioxus::prelude::*;
 #[component]
 pub fn Home() -> Element {
     rsx! {
-        div { "home" }
+        div { class: "text-xl text-red-600", "home" }
     }
 }
