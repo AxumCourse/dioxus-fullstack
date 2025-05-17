@@ -1,0 +1,32 @@
+[package]
+name = "image-hosting"
+version = "0.1.0"
+authors = ["axumrs <team@mail.axum.eu.org>"]
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/AxumCourse/dioxus-fullstack"
+homepage = "https://axum.eu.org/subject/dioxus-fullstack"
+description = "AXUM中文网专题： dioxus 全栈"
+
+
+[dependencies]
+dioxus = { version = "0.6.0", features = ["router", "fullstack"] }
+
+[features]
+default = ["web"]
+web = ["dioxus/web"]
+desktop = ["dioxus/desktop"]
+mobile = ["dioxus/mobile"]
+
+[profile]
+
+[profile.wasm-dev]
+inherits = "dev"
+opt-level = 1
+
+[profile.server-dev]
+inherits = "dev"
+
+[profile.android-dev]
+inherits = "dev"
