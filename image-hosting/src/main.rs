@@ -18,8 +18,3 @@ fn App() -> Element {
         Router::<Route> {}
     }
 }
-
-#[component]
-pub fn Hero() -> Element {
-    rsx! {}
-}

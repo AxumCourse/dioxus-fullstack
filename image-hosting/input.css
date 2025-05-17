@@ -1,10 +1,19 @@
 @import "tailwindcss";
 
 @layer base {
+  * {
+    @apply font-light;
+  }
   body {
     @apply bg-slate-100 text-gray-900 min-h-screen;
   }
   button {
     @apply cursor-pointer;
+  }
+}
+
+@layer components {
+  .axum-container {
+    @apply container mx-auto;
   }
 }
