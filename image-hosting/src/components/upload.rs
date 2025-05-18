@@ -2,6 +2,7 @@ use dioxus::{html::FileEngine, prelude::*};
 use std::sync::Arc;
 
 use crate::components::dialog::Alert;
+use crate::components::{ImageUploadIcon, LoadIcon};
 
 const MAX_FILE_SIZE: usize = 1 * 1024 * 1024;
 const ACCEPT_FILE_TYPE: &str = "image/*";
@@ -92,11 +93,14 @@ pub fn Upload() -> Element {
     };
     rsx! {
         div { class: "space-y-6",
-            div { class: "bg-white/70 border border-inset border-dashed border-gray-400 h-64 w-full hover:border-purple-400 relative",
+            div { class: "bg-white/70 h-64 w-full  relative",
                 label {
                     r#for: "upload",
-                    class: "cursor-pointer block w-full h-full flex justify-center items-center",
-                    "上传图片"
+                    class: "cursor-pointer block w-full h-full flex justify-center items-center  border border-inset border-dashed border-gray-400 hover:border-purple-400 hover:text-purple-600",
+                    div { class: "flex justify-center items-center flex-col gap-y-3",
+                        ImageUploadIcon { size: 32 }
+                        "上传图片"
+                    }
                 }
                 input {
                     id: "upload",
@@ -106,8 +110,14 @@ pub fn Upload() -> Element {
                     onchange: hanlde_upload_files,
                 }
                 if uploading() {
-                    div { class: "absolute top-0 left-0 w-full h-full flex justify-center items-center bg-white z-[1]",
-                        "正在上传，请稍等"
+                    div { class: "absolute top-0 left-0 w-full h-full flex justify-center items-center bg-white z-[1]  border border-inset border-dashed border-gray-400",
+                        div { class: "flex justify-center items-center flex-col gap-y-3",
+                            LoadIcon {
+                                size: 32,
+                                class: "animate-spin text-purple-700",
+                            }
+                            "正在上传"
+                        }
                     }
                 }
             }

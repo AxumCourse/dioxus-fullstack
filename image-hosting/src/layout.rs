@@ -1,4 +1,7 @@
-use crate::Route;
+use crate::{
+    components::{BookIcon, DashboardIcon, GithubIcon},
+    Route,
+};
 use dioxus::prelude::*;
 
 const LOGO_IMG: Asset = asset!("/assets/logo.png");
@@ -21,13 +24,31 @@ pub fn Frontend() -> Element {
             }
             nav {
                 ul { class: "flex justify-end items-center gap-x-2",
-                    li {
-                        a { href: "https://github.com", target: "_blank", "github" }
-                    
+                    li { class: "relative group",
+                        a {
+                            href: "https://axum.eu.org/subject/dioxus-fullstack",
+                            target: "_blank",
+                            BookIcon {}
+                        }
+                        div { class: "hidden absolute top-6 min-w-max px-2 py-1 left-1/2 -translate-x-1/2 text-xs bg-red-600 z-[1] lg:block opacity-0 invisible group-hover:opacity-100 group-hover:visible bg-white/70 rounded",
+                            "教程"
+                        }
                     }
-                    li {
-
-                        Link { to: Route::FrontendHomePage {}, "后台管理" }
+                    li { class: "relative group",
+                        a {
+                            href: "https://github.com/AxumCourse/dioxus-fullstack",
+                            target: "_blank",
+                            GithubIcon {}
+                        }
+                        div { class: "hidden absolute top-6 min-w-max px-2 py-1 left-1/2 -translate-x-1/2 text-xs bg-red-600 z-[1] lg:block opacity-0 invisible group-hover:opacity-100 group-hover:visible bg-white/70 rounded",
+                            "源码"
+                        }
+                    }
+                    li { class: "relative group",
+                        Link { to: Route::FrontendHomePage {}, DashboardIcon {} }
+                        div { class: "hidden absolute top-6 min-w-max px-2 py-1 left-1/2 -translate-x-1/2 text-xs bg-red-600 z-[1] lg:block opacity-0 invisible group-hover:opacity-100 group-hover:visible bg-white/70 rounded",
+                            "后台"
+                        }
                     }
                 }
             }
