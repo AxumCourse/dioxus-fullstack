@@ -13,6 +13,7 @@ pub struct Config {
     pub database_max_conns: u32,
     pub jwt_secret: String,
     pub jwt_exp: usize,
+    pub admin_pwd: String,
 }
 
 impl Config {

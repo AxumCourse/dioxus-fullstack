@@ -48,7 +48,7 @@ async fn admin_login_server(password: String) -> Result<String, ServerFnError> {
         CFG,
     };
 
-    if password != "foobar" {
+    if password != CFG.admin_pwd {
         return Err(ServerFnError::ServerError("密码错误".into()));
     }
 
