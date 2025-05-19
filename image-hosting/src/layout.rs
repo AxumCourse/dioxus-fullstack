@@ -3,7 +3,6 @@ use crate::{
     Route,
 };
 use dioxus::prelude::*;
-use dioxus_sdk::storage::use_persistent;
 
 const LOGO_IMG: Asset = asset!("/assets/logo.png");
 
@@ -60,8 +59,7 @@ pub fn Frontend() -> Element {
 
 #[component]
 pub fn Backend() -> Element {
-    let mut token = use_persistent("token", || String::new());
-    use_context_provider(|| token);
+    let mut token = use_context::<Signal<String>>();
     let mut confirm_logout = use_signal(|| false);
 
     rsx! {

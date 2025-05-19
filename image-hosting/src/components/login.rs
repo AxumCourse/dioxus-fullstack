@@ -43,8 +43,17 @@ pub fn AdminLogin() -> Element {
 
 #[server]
 async fn admin_login_server(password: String) -> Result<String, ServerFnError> {
+    use crate::{
+        jwt::{self, Claims, Keys},
+        CFG,
+    };
+
     if password != "foobar" {
         return Err(ServerFnError::ServerError("密码错误".into()));
     }
-    Ok("foobar".into())
+
+    let keys = Keys::new(CFG.jwt_secret.as_bytes());
+    let claims = Claims::new(CFG.jwt_exp);
+    let token = jwt::token(&claims, &keys.encoding);
+    Ok(token)
 }

@@ -2,7 +2,7 @@ use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Config {
     pub b2_bucket_name: String,
     pub b2_key_id: String,
@@ -11,6 +11,8 @@ pub struct Config {
     pub url_prefix: String,
     pub database_url: String,
     pub database_max_conns: u32,
+    pub jwt_secret: String,
+    pub jwt_exp: usize,
 }
 
 impl Config {

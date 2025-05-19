@@ -5,6 +5,8 @@ pub mod components;
 mod config;
 #[cfg(feature = "server")]
 mod db;
+#[cfg(feature = "server")]
+pub mod jwt;
 pub mod layout;
 pub mod models;
 pub mod pages;
