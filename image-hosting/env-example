@@ -1,0 +1,10 @@
+B2_BUCKET_NAME=你的B2桶名
+B2_KEY_ID=你的B2 KEY ID
+B2_APPLICATION_KEY=你的B2应用ID
+B2_ENDPOINT=你的B2端点
+URL_PREFIX=图片URL前缀
+DATABASE_URL='postgres://image_hosting:image_hosting@127.0.0.1:5432/image_hosting'
+DATABASE_MAX_CONNS=5
+JWT_SECRET=越长越好的JWT密钥
+JWT_EXP=3600
+ADMIN_PWD=管理员密码
