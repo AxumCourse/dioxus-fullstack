@@ -3,9 +3,6 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 #[derive(Deserialize, Serialize)]
-//
-// DATABASE_URL='postgres://image_hosting:image_hosting@127.0.0.1:5432/image_hosting'
-// DATABASE_MAX_CONNS=5
 pub struct Config {
     pub b2_bucket_name: String,
     pub b2_key_id: String,

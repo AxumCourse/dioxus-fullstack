@@ -222,7 +222,3 @@ async fn upload_server(files: Vec<File>) -> Result<Vec<String>, ServerFnError> {
         .map(|f| format!("{}/{}", &CFG.url_prefix, f))
         .collect())
 }
-
-// async fn upload_to_b2(files:Vec<(String, Vec<u8>)>) -> Result<Vec<String>, ServerFnError> {
-
-// }

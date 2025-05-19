@@ -25,10 +25,13 @@ sqlx = { version = "0.8.5", features = [
 ], optional = true }
 tokio = { version = "1.45.0", features = ["full"], optional = true }
 xid = { version = "1.1.1", optional = true }
+dioxus-sdk = { version = "0.7.0-alpha.1", features = [
+    "storage",
+], optional = true }
 
 [features]
 default = ["web"]
-web = ["dioxus/web"]
+web = ["dioxus/web", "dioxus-sdk"]
 desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 server = [

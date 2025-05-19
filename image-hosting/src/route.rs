@@ -1,4 +1,5 @@
-use crate::layout::Frontend as FrontendLayout;
+use crate::layout::{Backend as BackendLayout, Frontend as FrontendLayout};
+use crate::pages::backend::image::ImageHome as BackendHomePage;
 use crate::pages::{frontend::Home as FrontendHomePage, NotFound as NotFoundPage};
 use dioxus::prelude::*;
 
@@ -9,6 +10,12 @@ pub enum Route {
         #[layout(FrontendLayout)]
             #[route("/")]
             FrontendHomePage {},
+        #[end_layout]
+    #[end_nest]
+    #[nest("/admin")]
+        #[layout(BackendLayout)]
+            #[route("/")]
+            BackendHomePage {},
         #[end_layout]
     #[end_nest]
     

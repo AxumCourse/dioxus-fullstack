@@ -1486,6 +1486,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus-sdk"
+version = "0.7.0-alpha.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aa3c9958664bb6744496e7251a0c5df60029a5313fed0e36367c177041b28729"
+dependencies = [
+ "dioxus_storage",
+]
+
+[[package]]
 name = "dioxus-signals"
 version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1498,6 +1507,7 @@ dependencies = [
  "once_cell",
  "parking_lot",
  "rustc-hash",
+ "serde",
  "tracing",
  "warnings",
 ]
@@ -1559,12 +1569,53 @@ dependencies = [
 ]
 
 [[package]]
+name = "dioxus_storage"
+version = "0.1.0-alpha.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3ae0060a77465b07204e8f3834a50ddd2e8dd7ff2784e9f0e011dfe4cf2cf84"
+dependencies = [
+ "cfg-if",
+ "ciborium",
+ "dioxus",
+ "dioxus-signals",
+ "directories",
+ "futures-util",
+ "once_cell",
+ "rustc-hash",
+ "serde",
+ "tokio",
+ "wasm-bindgen",
+ "web-sys",
+ "yazi",
+]
+
+[[package]]
+name = "directories"
+version = "4.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f51c5d4ddabd36886dd3e1438cb358cdcb0d7c499cb99cb4ac2e38e18b5cb210"
+dependencies = [
+ "dirs-sys 0.3.7",
+]
+
+[[package]]
 name = "dirs"
 version = "6.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3e8aa94d75141228480295a7d0e7feb620b1a5ad9f12bc40be62411e38cce4e"
 dependencies = [
- "dirs-sys",
+ "dirs-sys 0.5.0",
+]
+
+[[package]]
+name = "dirs-sys"
+version = "0.3.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1b1d1d91c932ef41c0f2663aa8b0ca0342d444d842c06914aa0a7e352d0bada6"
+dependencies = [
+ "libc",
+ "redox_users 0.4.6",
+ "winapi",
 ]
 
 [[package]]
@@ -1575,7 +1626,7 @@ checksum = "e01a3366d27ee9890022452ee61b2b63a67e6f13f58900b651ff5665f0bb1fab"
 dependencies = [
  "libc",
  "option-ext",
- "redox_users",
+ "redox_users 0.5.0",
  "windows-sys 0.59.0",
 ]
 
@@ -2821,6 +2872,7 @@ version = "0.1.0"
 dependencies = [
  "config",
  "dioxus",
+ "dioxus-sdk",
  "dotenv",
  "lazy_static",
  "mime_guess",
@@ -4345,6 +4397,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "928fca9cf2aa042393a8325b9ead81d2f0df4cb12e1e24cef072922ccd99c5af"
 dependencies = [
  "bitflags 2.9.1",
+]
+
+[[package]]
+name = "redox_users"
+version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba009ff324d1fc1b900bd1fdb31564febe58a8ccc8a6fdbb93b543d33b13ca43"
+dependencies = [
+ "getrandom 0.2.16",
+ "libredox",
+ "thiserror 1.0.69",
 ]
 
 [[package]]
@@ -6872,6 +6935,12 @@ dependencies = [
  "encoding_rs",
  "hashlink",
 ]
+
+[[package]]
+name = "yazi"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c94451ac9513335b5e23d7a8a2b61a7102398b8cca5160829d313e84c9d98be1"
 
 [[package]]
 name = "yoke"
