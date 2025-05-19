@@ -11,63 +11,68 @@ pub fn ImageHome() -> Element {
 
     match &*load_image_list.read_unchecked() {
         Some(Ok(image_list)) => {
-            rsx! {
-                div { class: "w-full overflow-x-auto",
-                    table { class: "w-full",
-                        thead {
-                            tr { class: "bg-gray-300",
-                                th { class: "text-start p-3", "#" }
-                                th { class: "text-start p-3", "哈希" }
-                                th { class: "text-start p-3", "图片" }
-                                th { class: "text-start p-3", "大小" }
-                                th { class: "text-start p-3", "操作" }
+            if image_list.data.is_empty() {
+                rsx! {
+                    div { "空空如也" }
+                }
+            } else {
+                rsx! {
+                    div { class: "w-full overflow-x-auto",
+                        table { class: "w-full",
+                            thead {
+                                tr { class: "bg-gray-300",
+                                    th { class: "text-start p-3", "#" }
+                                    th { class: "text-start p-3", "哈希" }
+                                    th { class: "text-start p-3", "图片" }
+                                    th { class: "text-start p-3", "大小" }
+                                    th { class: "text-start p-3", "操作" }
+                                }
                             }
-                        }
-                        tbody {
-                            for img in &image_list.data {
-                                tr { class: "odd:bg-white hover:ring-inset hover:ring-1 hover:ring-blue-200",
-                                    td { class: "font-mono uppercase p-3", "{img.id}" }
-                                    td { class: "p-3 max-w-36 lg:max-w-max",
-                                        div { class: "truncate font-mono uppercase text-xs",
-                                            "{img.hash}"
-                                        }
-                                    }
-                                    td { class: "p-3",
-                                        a {
-                                            href: "{img.file_path}",
-                                            target: "_blank",
-                                            img {
-                                                src: "{img.file_path}",
-                                                class: "w-10 h-10 object-cover",
+                            tbody {
+                                for img in &image_list.data {
+                                    tr { class: "odd:bg-white hover:ring-inset hover:ring-1 hover:ring-blue-200",
+                                        td { class: "font-mono uppercase p-3", "{img.id}" }
+                                        td { class: "p-3 max-w-36 lg:max-w-max",
+                                            div { class: "truncate font-mono uppercase text-xs",
+                                                "{img.hash}"
                                             }
                                         }
-                                    }
-                                    td { class: "p-3",
-                                        div { class: "text-xs", "{img.file_size}" }
-                                    }
-                                    td { class: "p-3",
-                                        DelImg {
-                                            id: img.id.clone(),
-                                            file_path: img.file_path.clone(),
-                                            load_image_list,
+                                        td { class: "p-3",
+                                            a {
+                                                href: "{img.file_path}",
+                                                target: "_blank",
+                                                img {
+                                                    src: "{img.file_path}",
+                                                    class: "w-10 h-10 object-cover",
+                                                }
+                                            }
+                                        }
+                                        td { class: "p-3",
+                                            div { class: "text-xs", "{img.file_size}" }
+                                        }
+                                        td { class: "p-3",
+                                            DelImg {
+                                                id: img.id.clone(),
+                                                file_path: img.file_path.clone(),
+                                                load_image_list,
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
                     }
-                }
-
-                ul { class: "flex justify-end items-center gap-x-2",
-                    for i in 1..=image_list.total_page {
-                        li { key: "page-{i}",
-                            button {
-                                class: "p-1  hover:text-blue-600",
-                                onclick: move |_| {
-                                    page.set(i - 1);
-                                    load_image_list.restart();
-                                },
-                                "{i}"
+                    ul { class: "flex justify-end items-center gap-x-2",
+                        for i in 1..=image_list.total_page {
+                            li { key: "page-{i}",
+                                button {
+                                    class: "p-1  hover:text-blue-600",
+                                    onclick: move |_| {
+                                        page.set(i - 1);
+                                        load_image_list.restart();
+                                    },
+                                    "{i}"
+                                }
                             }
                         }
                     }
@@ -92,7 +97,11 @@ async fn image_list_server(
     token: String,
     page: u32,
 ) -> Result<models::Pagination<models::Image>, ServerFnError> {
+    use crate::jwt;
     use crate::{get_db, CFG};
+
+    let keys = jwt::Keys::new(CFG.jwt_secret.as_bytes());
+    let _ = jwt::validate(&token, &keys.decoding)?;
 
     let db = get_db().await;
 
@@ -128,24 +137,54 @@ fn DelImg(
     load_image_list: Resource<Result<models::Pagination<models::Image>, ServerFnError>>,
 ) -> Element {
     let mut confirm_del = use_signal(|| false);
+    let token = use_context::<Signal<String>>();
     rsx! {
-        button { onclick: move |_| confirm_del.set(true), "删除" }
+        button {
+            onclick: move |_| confirm_del.set(true),
+            class: "px-3 py-1.5 text-sm bg-red-600 text-gray-50 rounded",
+            "删除"
+        }
         if confirm_del() {
             Confirm {
                 oncancel: move |_| confirm_del.set(false),
                 onok: move |_| {
-                    let _id = id.clone();
+                    let id = id.clone();
                     async move {
                         confirm_del.set(false);
+                        let _ = del_img_server(token(), id).await.unwrap();
+                        load_image_list.restart();
                     }
                 },
                 div { class: "flex flex-col justify-center items-center gap-y-3",
                     div {
-                        img { src: "{file_path}", class: "w-12 object-cover" }
+                        img {
+                            src: "{file_path}",
+                            class: "w-12 h-12 object-cover",
+                        }
                     }
                     div { "删除后不可恢复，确定删除吗？" }
                 }
             }
         }
     }
+}
+
+#[server]
+async fn del_img_server(token: String, id: String) -> Result<(), ServerFnError> {
+    use crate::{get_db, jwt, B2, CFG};
+
+    let keys = jwt::Keys::new(CFG.jwt_secret.as_bytes());
+    let _ = jwt::validate(&token, &keys.decoding)?;
+
+    let db = get_db().await;
+
+    let r: Option<(String,)> = sqlx::query_as("DELETE FROM images WHERE id=$1 RETURNING file_path")
+        .bind(&id)
+        .fetch_optional(db)
+        .await?;
+    if let Some((file_path,)) = r {
+        let resp = B2.delete_object(&file_path).await?;
+        dioxus::logger::tracing::info!("{:?}", resp);
+    }
+    Ok(())
 }
