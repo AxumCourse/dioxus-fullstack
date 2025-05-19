@@ -4,7 +4,7 @@ use std::sync::Arc;
 use crate::components::dialog::Alert;
 use crate::components::{ImageUploadIcon, LoadIcon};
 
-const MAX_FILE_SIZE: usize = 1 * 1024 * 1024;
+const MAX_FILE_SIZE: usize = 2 * 1024 * 1024;
 const ACCEPT_FILE_TYPE: &str = "image/*";
 const ACCEPT_FILE_PREFIX: &str = "image/";
 

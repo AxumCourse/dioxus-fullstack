@@ -17,7 +17,7 @@ pub struct Image {
     pub file_size: i64,
 }
 
-pub const DEFAULT_PAGE_SIZE: u32 = 3;
+pub const DEFAULT_PAGE_SIZE: u32 = 30;
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Pagination<T> {
     pub data: Vec<T>,
