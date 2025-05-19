@@ -1,5 +1,5 @@
 use jsonwebtoken::{DecodingKey, EncodingKey};
-use rand::rng;
+
 use serde::{Deserialize, Serialize};
 
 pub struct Keys {
